@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>竞彩足球资讯 - FootHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a5f2a;
+            --secondary-color: #2d8a3e;
+            --accent-color: #f59e0b;
+            --bg-main: #f8faf8;
+            --bg-card: #ffffff;
+            --bg-header: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-light: #374151;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--bg-main);
+            min-height: 100vh;
+            color: var(--text-dark);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        .navbar {
+            background: var(--bg-header) !important;
+            box-shadow: 0 1px 3px var(--shadow-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+        
+        .navbar-brand i {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+        
+        .nav-link {
+            color: var(--text-light) !important;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+        
+        .hero-section {
+            padding: 50px 0;
+            text-align: center;
+            background: linear-gradient(180deg, #ffffff 0%, var(--bg-main) 100%);
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        
+        .hero-section h1 i {
+            color: var(--accent-color);
+        }
+        
+        .hero-section p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 25px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px 25px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-header h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+        
+        .section-header h3 i {
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+        
+        .btn-group .btn {
+            border-color: var(--border-color);
+            color: var(--text-light);
+            background: var(--bg-card);
+        }
+        
+        .btn-group .btn:hover, .btn-group .btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        .match-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+        
+        .match-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            border-color: var(--secondary-color);
+        }
+        
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .match-num {
+            background: #fef3c7;
+            color: #b45309;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .league-badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .match-time {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        .match-time i {
+            margin-right: 4px;
+        }
+        
+        .teams-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0;
+        }
+        
+        .team {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .team-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .vs-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .vs-badge {
+            background: var(--primary-color);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        
+        .rangqiu-badge {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        
+        .rangqiu-badge.danguan {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .odds-section {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .odds-container {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .odds-group {
+            flex: 1;
+        }
+        
+        .odds-type-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        
+        .odds-row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .odds-item {
+            background: #f3f4f6;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-align: center;
+            flex: 1;
+            max-width: 90px;
+            transition: all 0.2s ease;
+        }
+        
+        .odds-item:hover {
+            background: #e5e7eb;
+        }
+        
+        .odds-item.win {
+            border-left: 3px solid #22c55e;
+            background: #f0fdf4;
+        }
+        
+        .odds-item.draw {
+            border-left: 3px solid #f59e0b;
+            background: #fffbeb;
+        }
+        
+        .odds-item.lose {
+            border-left: 3px solid #ef4444;
+            background: #fef2f2;
+        }
+        
+        .odds-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        
+        .odds-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .news-modal .modal-content {
+            background: var(--bg-card);
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .news-modal .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 24px;
+        }
+        
+        .news-modal .modal-title {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .news-modal .modal-body {
+            padding: 24px;
+        }
+        
+        .news-modal .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 16px 24px;
+        }
+        
+        .match-info-box {
+            background: #f0fdf4;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .match-info-box .team-vs {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .news-item {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .news-item h6 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .news-item p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        .news-item a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .news-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .analysis-summary {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .analysis-summary h5 {
+            color: #92400e;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .analysis-summary p {
+            color: #78350f;
+            margin: 0;
+        }
+        
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            border-color: #e5e7eb;
+            color: var(--text-dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            border-color: #d1d5db;
+            color: var(--text-dark);
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px rgba(26, 95, 42, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+        
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            background: var(--secondary-color);
+            box-shadow: 0 6px 20px rgba(26, 95, 42, 0.4);
+        }
+        
+        .error-alert {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 20px 0;
+            color: #dc2626;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #d1d5db;
+            margin-bottom: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stats-bar {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+            
+            .stat-item {
+                padding: 12px 20px;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .teams-section {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .vs-section {
+                order: -1;
+            }
+            
+            .odds-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .odds-item {
+                max-width: none;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-trophy-fill"></i>FootHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#matches">赛事列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showAbout()">关于我们</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="container">
+            <h1><i class="bi bi-trophy-fill"></i> 竞彩足球资讯中心</h1>
+            <p>实时获取竞彩足球赛事数据，智能分析赛事资讯</p>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalMatches">--</div>
+                    <div class="stat-label">今日赛事</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalLeagues">--</div>
+                    <div class="stat-label">联赛数量</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="lastUpdate">--</div>
+                    <div class="stat-label">最后更新</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container py-4" id="matches">
+        <div class="section-header">
+            <h3><i class="bi bi-calendar-event"></i>今日赛事</h3>
+            <div class="btn-group">
+                <button class="btn btn-sm active" onclick="filterMatches('all')">全部</button>
+                <button class="btn btn-sm" onclick="filterMatches('hot')">热门</button>
+                <button class="btn btn-sm" onclick="filterMatches('danguan')">单关</button>
+            </div>
+        </div>
+        
+        <div id="matchesContainer">
+            <div class="loading-spinner">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">加载中...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadMatches()" title="刷新数据">
+        <i class="bi bi-arrow-clockwise"></i>
+    </button>
+
+    <div class="modal fade news-modal" id="newsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newsModalTitle">赛事资讯</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="newsModalBody">
+                    <div class="loading-spinner">
+                        <div class="spinner-border text-success" role="status"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        let allMatches = [];
+        
+        async function loadMatches() {
+            const container = document.getElementById('matchesContainer');
+            container.innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">加载中...</span>
+                    </div>
+                </div>
+            `;
+            
+            try {
+                const response = await fetch(`${API_BASE}/matches`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    allMatches = result.data.matches || [];
+                    updateStats(result.data);
+                    renderMatches(allMatches);
+                } else {
+                    container.innerHTML = `
+                        <div class="error-alert">
+                            <i class="bi bi-exclamation-triangle"></i> 加载失败: ${result.error}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="error-alert">
+                        <i class="bi bi-exclamation-triangle"></i> 网络错误，请检查后端服务是否启动
+                        <br><small>${error.message}</small>
+                    </div>
+                `;
+            }
+        }
+        
+        function updateStats(data) {
+            document.getElementById('totalMatches').textContent = data.total_matches || 0;
+            
+            const leagues = new Set(data.matches?.map(m => m.league) || []);
+            document.getElementById('totalLeagues').textContent = leagues.size;
+            
+            const updateTime = new Date(data.updated_at);
+            document.getElementById('lastUpdate').textContent = updateTime.toLocaleTimeString('zh-CN');
+        }
+        
+        function renderMatches(matches) {
+            const container = document.getElementById('matchesContainer');
+            
+            if (!matches || matches.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-inbox"></i>
+                        <p>暂无赛事数据</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = matches.map(match => {
+                const nspf = match.odds?.nspf || {};
+                const spf = match.odds?.spf || {};
+                const rangqiuDisplay = match.rangqiu_display || '0';
+                const isDanguan = rangqiuDisplay.includes('单关');
+                
+                return `
+                <div class="match-card" onclick="showMatchNews('${match.match_id}', '${escapeHtml(match.home_team)}', '${escapeHtml(match.away_team)}', '${escapeHtml(match.league)}')">
+                    <div class="match-header">
+                        <div>
+                            <span class="match-num">${escapeHtml(match.match_num) || ''}</span>
+                            <span class="league-badge ms-2">${escapeHtml(match.league) || '未知联赛'}</span>
+                        </div>
+                        <span class="match-time"><i class="bi bi-clock"></i> ${escapeHtml(match.match_datetime) || '时间待定'}</span>
+                    </div>
+                    <div class="teams-section">
+                        <div class="team">
+                            <div class="team-name">${escapeHtml(match.home_team) || '主队'}</div>
+                        </div>
+                        <div class="vs-section">
+                            <div class="vs-badge">VS</div>
+                            <span class="rangqiu-badge ${isDanguan ? 'danguan' : ''}">${escapeHtml(rangqiuDisplay)}</span>
+                        </div>
+                        <div class="team">
+                            <div class="team-name">${escapeHtml(match.away_team) || '客队'}</div>
+                        </div>
+                    </div>
+                    <div class="odds-section">
+                        <div class="odds-container">
+                            <div class="odds-group">
+                                <div class="odds-type-label">不让球胜平负</div>
+                                <div class="odds-row">
+                                    <div class="odds-item win">
+                                        <div class="odds-label">胜</div>
+                                        <div class="odds-value">${nspf['胜']?.sp || '-'}</div>
+                                    </div>
+                                    <div class="odds-item draw">
+                                        <div class="odds-label">平</div>
+                                        <div class="odds-value">${nspf['平']?.sp || '-'}</div>
+                                    </div>
+                                    <div class="odds-item lose">
+                                        <div class="odds-label">负</div>
+                                        <div class="odds-value">${nspf['负']?.sp || '-'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="odds-group">
+                                <div class="odds-type-label">让球胜平负 (${match.odds?.rangqiu_info || '不让球'})</div>
+                                <div class="odds-row">
+                                    <div class="odds-item win">
+                                        <div class="odds-label">胜</div>
+                                        <div class="odds-value">${spf['胜']?.sp || '-'}</div>
+                                    </div>
+                                    <div class="odds-item draw">
+                                        <div class="odds-label">平</div>
+                                        <div class="odds-value">${spf['平']?.sp || '-'}</div>
+                                    </div>
+                                    <div class="odds-item lose">
+                                        <div class="odds-label">负</div>
+                                        <div class="odds-value">${spf['负']?.sp || '-'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+        
+        function filterMatches(type) {
+            document.querySelectorAll('.btn-group .btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (type === 'all') {
+                renderMatches(allMatches);
+            } else if (type === 'hot') {
+                const hotLeagues = ['英超', '西甲', '德甲', '意甲', '法甲', '欧冠', '欧罗巴', '中超'];
+                const filtered = allMatches.filter(m => 
+                    hotLeagues.some(league => m.league?.includes(league))
+                );
+                renderMatches(filtered.length > 0 ? filtered : allMatches);
+            } else if (type === 'danguan') {
+                const filtered = allMatches.filter(m => 
+                    m.rangqiu_display?.includes('单关')
+                );
+                renderMatches(filtered.length > 0 ? filtered : allMatches);
+            }
+        }
+        
+        async function showMatchNews(matchId, homeTeam, awayTeam, league) {
+            const modal = new bootstrap.Modal(document.getElementById('newsModal'));
+            document.getElementById('newsModalTitle').textContent = `${homeTeam} vs ${awayTeam} - 赛事分析`;
+            document.getElementById('newsModalBody').innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner-border text-success" role="status"></div>
+                </div>
+            `;
+            modal.show();
+            
+            try {
+                const response = await fetch(`${API_BASE}/match/${matchId}/news`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    renderNewsModal(result.data);
+                } else {
+                    document.getElementById('newsModalBody').innerHTML = `
+                        <div class="error-alert">
+                            <i class="bi bi-exclamation-triangle"></i> ${result.error}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('newsModalBody').innerHTML = `
+                    <div class="error-alert">
+                        <i class="bi bi-exclamation-triangle"></i> 获取资讯失败: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        function renderNewsModal(data) {
+            const match = data.match || {};
+            const summary = data.summary || '';
+            const news = data.news || [];
+            const homeTeamInfo = data.home_team_info || {};
+            const awayTeamInfo = data.away_team_info || {};
+            
+            let html = `
+                <div class="match-info-box">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="team-vs">${escapeHtml(match.home_team)}</span>
+                        <span class="mx-3 text-warning fw-bold">VS</span>
+                        <span class="team-vs">${escapeHtml(match.away_team)}</span>
+                    </div>
+                    <div class="text-center mt-2 text-muted small">
+                        ${escapeHtml(match.league)} | ${escapeHtml(match.match_datetime)} | ${escapeHtml(match.rangqiu_display)}
+                    </div>
+                </div>
+            `;
+            
+            if (summary) {
+                html += `
+                    <div class="analysis-summary">
+                        <h5><i class="bi bi-lightbulb"></i> 赛事摘要</h5>
+                        <div class="analysis-content">${escapeHtml(summary)}</div>
+                    </div>
+                `;
+            }
+            
+            if (homeTeamInfo.info || awayTeamInfo.info) {
+                html += '<div class="row mt-3"><div class="col-md-6">';
+                if (homeTeamInfo.info) {
+                    html += `
+                        <div class="news-item">
+                            <h6><i class="bi bi-house"></i> ${escapeHtml(match.home_team)} 动态</h6>
+                            <p>${escapeHtml(homeTeamInfo.info)}</p>
+                        </div>
+                    `;
+                }
+                html += '</div><div class="col-md-6">';
+                if (awayTeamInfo.info) {
+                    html += `
+                        <div class="news-item">
+                            <h6><i class="bi bi-airplane"></i> ${escapeHtml(match.away_team)} 动态</h6>
+                            <p>${escapeHtml(awayTeamInfo.info)}</p>
+                        </div>
+                    `;
+                }
+                html += '</div></div>';
+            }
+            
+            if (news.length > 0) {
+                html += '<h6 class="mt-4 mb-2"><i class="bi bi-newspaper"></i> 相关资讯</h6>';
+                news.forEach(item => {
+                    html += `
+                        <div class="news-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="mb-1">${escapeHtml(item.title)}</h6>
+                                ${item.source ? `<span class="badge bg-secondary">${escapeHtml(item.source)}</span>` : ''}
+                            </div>
+                            <p class="mb-2">${escapeHtml(item.summary || item.content?.substring(0, 150))}${item.summary || item.content ? '...' : ''}</p>
+                            <a href="${escapeHtml(item.url)}" target="_blank" class="small">阅读全文 <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (!summary && news.length === 0) {
+                html += `
+                    <div class="empty-state">
+                        <i class="bi bi-search"></i>
+                        <p>暂无相关资讯</p>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('newsModalBody').innerHTML = html;
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function showAbout() {
+            alert('FootHub 竞彩足球资讯中心\n\n数据来源: 500彩票网竞彩足球\n资讯分析: Tavily AI\n\n仅供学习参考，请理性购彩');
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadMatches);
+    </script>
+</body>
+</html>
